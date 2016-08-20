@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<workbook subject="English Word Test For Child">
+   <item type="multiple_choice">
+      <question>What kind of fruit is it?</question>
+      <question_img>apple</question_img>
+      <answer id="1">apple</answer>
+      <answer id="2">banana</answer>
+      <answer id="3">chery</answer>
+      <answer id="4">grape</answer>
+      <collect_answer>1</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>What kind of animal is it?</question>
+      <question_img>dog</question_img>
+      <answer id="1">cat</answer>
+      <answer id="2">horse</answer>
+      <answer id="3">dog</answer>
+      <answer id="4">pig</answer>
+      <collect_answer>3</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what number is it?</question>
+      <question_img>eight</question_img>
+      <answer id="1">one</answer>
+      <answer id="2">four</answer>
+      <answer id="3">three</answer>
+	  <answer id="4">eight</answer>
+      <collect_answer>4</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what kind of clothe is it?</question>
+      <question_img>dress</question_img>
+      <answer id="1">coat</answer>
+      <answer id="2">dress</answer>
+	  <answer id="3">shirt</answer>
+	  <answer id="4">pants</answer>
+      <collect_answer>2</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what kind of food is it?</question>
+      <question_img>milk</question_img>
+      <answer id="1">juice</answer>
+      <answer id="2">milk</answer>
+	  <answer id="3">egg</answer>
+	  <answer id="4">rice</answer>
+      <collect_answer>2</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what is it?</question>
+      <question_img>flower</question_img>
+      <answer id="1">sky</answer>
+      <answer id="2">star</answer>
+	  <answer id="3">moon</answer>
+	  <answer id="4">flower</answer>
+      <collect_answer>4</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what kind of vegetable is it?</question>
+      <question_img>carrot</question_img>
+      <answer id="1">corn</answer>
+      <answer id="2">bean</answer>
+	  <answer id="3">carrot</answer>
+	  <answer id="4">pepper</answer>
+      <collect_answer>3</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what color is it?</question>
+      <question_img>green</question_img>
+      <answer id="1">green</answer>
+      <answer id="2">red</answer>
+	  <answer id="3">blue</answer>
+	  <answer id="4">white</answer>
+      <collect_answer>1</collect_answer>
+   </item>
+   <item type="multiple_choice">
+      <question>what kind of transportation is it?</question>
+      <question_img>airplane</question_img>
+      <answer id="1">car</answer>
+      <answer id="2">bus</answer>
+	  <answer id="3">airplane</answer>
+	  <answer id="4">train</answer>
+      <collect_answer>3</collect_answer>
+   </item>   
+</workbook>
