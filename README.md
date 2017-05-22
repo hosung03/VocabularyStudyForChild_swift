@@ -1,2 +1,2 @@
 # VocabularyStudyForChild_swift
-This is a Vocabulary Study Application ForChild which developed with Swift
+This is a vocabulary study application for a child which is developed with Swift
