@@ -2,7 +2,7 @@
 //  ResultViewController.swift
 //  Assignment
 //
-//  Created by Mac on 2016. 7. 23..
+//  Created by Hosung, Lee on 2016. 7. 23..
 //  Copyright © 2016년 Hosung. All rights reserved.
 //
 
@@ -25,13 +25,13 @@ class ResultViewController: UIViewController, UICollectionViewDataSource, UIColl
         evaluationLabel.text = ""
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return testItemList.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ResultCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ResultCollectionViewCell
         
         cell.numberLabel.text = String(indexPath.item + 1)
         
@@ -61,9 +61,9 @@ class ResultViewController: UIViewController, UICollectionViewDataSource, UIColl
         return cell
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "TestReview" {
-            let testPageViewController = segue.destinationViewController as! TestPageViewController
+            let testPageViewController = segue.destination as! TestPageViewController
             testPageViewController.reviewState = true
             testPageViewController.testItemList = testItemList
         }

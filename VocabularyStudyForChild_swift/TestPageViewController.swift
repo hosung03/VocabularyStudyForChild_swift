@@ -2,7 +2,7 @@
 //  TestPageViewController.swift
 //  Assignment
 //
-//  Created by Mac on 2016. 7. 22..
+//  Created by Hosung, Lee on 2016. 7. 22..
 //  Copyright © 2016년 Hosung. All rights reserved.
 //
 
@@ -17,7 +17,7 @@ class QuestionItem:NSObject {
     var user_answer : String?
 }
 
-class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageViewControllerDataSource {
+class TestPageViewController: UIPageViewController, XMLParserDelegate, UIPageViewControllerDataSource {
     // for view state
     var reviewState : Bool = false
     
@@ -25,7 +25,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
     var boxView = UIView()
     
     // for xml
-    var parser = NSXMLParser()
+    var parser = XMLParser()
     var testTitle : String = ""
     var testXMLList : Array<QuestionItem>?
     var testXMLItem : QuestionItem?
@@ -71,29 +71,29 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
     func settingPageViewController() {
         // set pageviewcollor
         self.dataSource = self
-        self.setViewControllers([getViewControllerAtIndex(0)] as [TestItemViewController], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+        self.setViewControllers([getViewControllerAtIndex(0)] as [TestItemViewController], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
         
         // set page controller
         let appearance = UIPageControl.appearance()
-        appearance.pageIndicatorTintColor = UIColor.grayColor()
-        appearance.currentPageIndicatorTintColor = UIColor.whiteColor()
-        appearance.backgroundColor = UIColor.darkGrayColor()
+        appearance.pageIndicatorTintColor = UIColor.gray
+        appearance.currentPageIndicatorTintColor = UIColor.white
+        appearance.backgroundColor = UIColor.darkGray
     }
     
     func showIndicator() {
-        view.backgroundColor = UIColor.blackColor()
+        view.backgroundColor = UIColor.black
         
         boxView = UIView(frame: CGRect(x: view.frame.midX - 90, y: view.frame.midY - 25, width: 180, height: 50))
-        boxView.backgroundColor = UIColor.whiteColor()
+        boxView.backgroundColor = UIColor.white
         boxView.alpha = 0.8
         boxView.layer.cornerRadius = 10
         
-        let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         activityView.startAnimating()
         
         let textLabel = UILabel(frame: CGRect(x: 60, y: 0, width: 200, height: 50))
-        textLabel.textColor = UIColor.grayColor()
+        textLabel.textColor = UIColor.gray
         textLabel.text = "Loading XML"
         
         boxView.addSubview(activityView)
@@ -103,7 +103,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
     
     func removeIndicator(){
         boxView.removeFromSuperview()
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
     }
     
     // for load & parsing XML
@@ -113,20 +113,20 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         //let url: NSURL = NSURL(string: urlpath)!
         
         // load xml file
-        let urlpath = NSBundle.mainBundle().pathForResource("workbook", ofType: "xml")
+        let urlpath = Bundle.main.path(forResource: "workbook", ofType: "xml")
         if urlpath == nil {
             NSLog("Failed to find workbook.xml")
             return false
         }
-        let url = NSURL(fileURLWithPath: urlpath!)
+        let url = URL(fileURLWithPath: urlpath!)
         
         // parsing
-        parser = NSXMLParser(contentsOfURL: url)!
+        parser = XMLParser(contentsOf: url)!
         parser.delegate = self
         return parser.parse()
     }
     
-    func parserDidStartDocument(parser: NSXMLParser) {
+    func parserDidStartDocument(_ parser: XMLParser) {
         if testXMLList == nil {
             testXMLList = Array<QuestionItem>()
         }else{
@@ -134,7 +134,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         }
     }
     
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         curElement = elementName
         if curElement == "workbook" {
             testTitle = attributeDict ["subject"]! as String
@@ -153,7 +153,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         }
     }
     
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         if testXMLItem == nil {
             return
         }
@@ -174,19 +174,19 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         }
     }
     
-    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         curElement = ""
         curElementID = ""
     }
     
-    func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         curElement = ""
         curElementID = ""
-        NSLog("failure error: %@", parseError)
+        print("failure error: %@", parseError)
     }
     
     // for selecting questions randomly
-    func makeRandomIndexArray(max: Int) -> Array<Int> {
+    func makeRandomIndexArray(_ max: Int) -> Array<Int> {
         var indexArray = Array<Int>()
         while(indexArray.count < 5) {
             let value = Int(arc4random_uniform(UInt32(max)))
@@ -198,9 +198,9 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
     }
     
     // for page view controll
-    func getViewControllerAtIndex(index: Int) -> TestItemViewController
+    func getViewControllerAtIndex(_ index: Int) -> TestItemViewController
     {
-        let testItemViewController = storyboard!.instantiateViewControllerWithIdentifier("TestItemViewController") as! TestItemViewController
+        let testItemViewController = storyboard!.instantiateViewController(withIdentifier: "TestItemViewController") as! TestItemViewController
         testItemViewController.testPageViewController = self
         testItemViewController.pageIndex = index
         testItemViewController.reviewState = reviewState
@@ -215,7 +215,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         return testItemViewController
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
         let testItemController = viewController as! TestItemViewController
         var index = testItemController.pageIndex
@@ -226,7 +226,7 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
         return getViewControllerAtIndex(index)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
     {
         let testItemController = viewController as! TestItemViewController
         var index = testItemController.pageIndex
@@ -241,18 +241,18 @@ class TestPageViewController: UIPageViewController, NSXMLParserDelegate, UIPageV
     }
 
     // for page controller
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return testItemList!.count
     }
     
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         return 0
     }
     
     func callResultViewController() {
-        if let resultViewController = storyboard!.instantiateViewControllerWithIdentifier("ResultViewController") as? ResultViewController {
+        if let resultViewController = storyboard!.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
             resultViewController.testItemList = testItemList!
-            presentViewController(resultViewController, animated: true, completion: nil)
+            present(resultViewController, animated: true, completion: nil)
         }
     }
 }

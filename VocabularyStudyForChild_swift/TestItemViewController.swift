@@ -2,7 +2,7 @@
 //  TestItemViewController.swift
 //  XMLParsing
 //
-//  Created by Mac on 2016. 7. 18..
+//  Created by Hosung, Lee on 2016. 7. 18..
 //  Copyright © 2016년 Hosung. All rights reserved.
 //
 
@@ -32,17 +32,17 @@ class TestItemViewController: UIViewController, UITableViewDataSource, UITableVi
     var questionImg: String = "" {
         didSet {
             if let imageView = itemImageView {
-                let urlpath = NSBundle.mainBundle().pathForResource(questionImg, ofType: "png")
+                let urlpath = Bundle.main.path(forResource: questionImg, ofType: "png")
                 if urlpath == nil {
                     return
                 }
-                if let imageData = NSData(contentsOfURL: NSURL(fileURLWithPath: urlpath!)) {
+                if let imageData = try? Data(contentsOf: URL(fileURLWithPath: urlpath!)) {
                     imageView.image = UIImage(data: imageData)
                 }
             }
         }
     }
-    var answers = Dictionary<String,String>?()
+    var answers = Dictionary<String,String>()
     var collect_answer: String = ""
     var user_answer: String = ""
     var selectedSection : Int = -1
@@ -61,54 +61,54 @@ class TestItemViewController: UIViewController, UITableViewDataSource, UITableVi
         itemTitleLabel!.text = "Question " + String(pageIndex + 1)
         itemTextView!.text = questionText
         if reviewState {
-            goTestButton.hidden = false
+            goTestButton.isHidden = false
         }
         else {
-            goTestButton.hidden = true
+            goTestButton.isHidden = true
         }
 
-        let urlpath = NSBundle.mainBundle().pathForResource(questionImg, ofType: "png")
+        let urlpath = Bundle.main.path(forResource: questionImg, ofType: "png")
         if urlpath == nil {
             return
         }
-        if let imageData = NSData(contentsOfURL: NSURL(fileURLWithPath: urlpath!)) {
+        if let imageData = try? Data(contentsOf: URL(fileURLWithPath: urlpath!)) {
              itemImageView!.image = UIImage(data: imageData)
         }
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (answers!.count)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return answers.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(testItemIdentifier) as UITableViewCell?
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: testItemIdentifier) as UITableViewCell?
         if (cell == nil) {
-            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: testItemIdentifier)
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: testItemIdentifier)
         }
         
-        cell!.textLabel?.text = answers![String(indexPath.row + 1)]
+        cell?.textLabel?.text = answers[String(indexPath.row + 1)]
         if reviewState && String(indexPath.row + 1) == user_answer {
-            cell!.imageView?.image = UIImage(named: "ic_check_box")
+            cell?.imageView?.image = UIImage(named: "ic_check_box")
         }
         else if selectedSection == indexPath.section && selectedRow == indexPath.row {
-            cell!.imageView?.image = UIImage(named: "ic_check_box")
+            cell?.imageView?.image = UIImage(named: "ic_check_box")
         } else {
-            cell!.imageView?.image = UIImage(named: "ic_uncheck_box")
+            cell?.imageView?.image = UIImage(named: "ic_uncheck_box")
         }
         
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSection = indexPath.section
         selectedRow = indexPath.row
         
         for i in 0...tableView.numberOfSections-1
         {
-            for j in 0...tableView.numberOfRowsInSection(i)-1
+            for j in 0...tableView.numberOfRows(inSection: i)-1
             {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: j, inSection: i)) {
+                if let cell = tableView.cellForRow(at: IndexPath(row: j, section: i)) {
                     if selectedSection == i && selectedRow == j {
                         cell.imageView?.image = UIImage(named: "ic_check_box")
                     } else {
@@ -120,21 +120,21 @@ class TestItemViewController: UIViewController, UITableViewDataSource, UITableVi
         testPageViewController!.testItemList![pageIndex].user_answer = String(indexPath.row +  1)
         
         if pageIndex + 1 == testPageViewController!.testItemList!.count {
-            let controller = UIAlertController(title: "Answer", message: "You want to get a result!", preferredStyle: .Alert)
-            let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) {
+            let controller = UIAlertController(title: "Answer", message: "You want to get a result!", preferredStyle: .alert)
+            let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) {
                 UIAlertAction in self.testPageViewController!.callResultViewController()
             }
-            let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil)
+            let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil)
             
             controller.addAction(yesAction)
             controller.addAction(noAction)
-            presentViewController(controller, animated: true, completion: nil)
+            present(controller, animated: true, completion: nil)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoTest" {
-            let testPageViewController = segue.destinationViewController as! TestPageViewController
+            let testPageViewController = segue.destination as! TestPageViewController
             testPageViewController.reviewState = false
         }
     }

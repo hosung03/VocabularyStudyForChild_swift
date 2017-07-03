@@ -2,7 +2,7 @@
 //  ResultCollectionViewCell.swift
 //  Assignment
 //
-//  Created by Mac on 2016. 7. 23..
+//  Created by Hosung, Lee on 2016. 7. 23..
 //  Copyright © 2016년 Hosung. All rights reserved.
 //
 
